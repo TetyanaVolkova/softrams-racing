@@ -40,9 +40,11 @@ app.use(
   })
 );
 
+
 app.get('/members', (req, res) => {
   request('http://localhost:3000/members', (err, response, body) => {
     if (response.statusCode <= 500) {
+      console.log(body);
       res.send(body);
     }
   });
@@ -50,7 +52,11 @@ app.get('/members', (req, res) => {
 
 // TODO: Dropdown!
 app.get('/teams', (req, res) => {
-
+  request('http://localhost:3000/teams', (err, response, body) => {
+    if (response.statusCode <= 500) {
+      res.send(body);
+    }
+  });
 });
 
 // Submit Form!
@@ -67,7 +73,7 @@ app.post('/members', (req, res) => {
   function finished(err) {
     console.log("ADDED!!!");
   }
-  res.json(teams);
+  res.json(teams.members);
 });
 
 app.get('*', (req, res) => {
