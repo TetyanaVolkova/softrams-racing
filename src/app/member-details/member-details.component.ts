@@ -53,8 +53,6 @@ export class MemberDetailsComponent implements OnInit {
 
   // TODO: Add member to members
   onSubmit() {
-    console.log(this.memberForm.value);
-    
     this.memberModel = {
       id: +this.membersCount + 1,
       firstName: this.memberForm.value.firstName,
@@ -68,7 +66,9 @@ export class MemberDetailsComponent implements OnInit {
     .post('http://localhost:3000/members', this.memberModel)
     .subscribe(response => {
       this.appService.membersListener.next(response);
+      setTimeout(() => {
+        this.router.navigate(['/members']);
+      }, 100);
     });
-    this.router.navigate(['/members']);
   }
 }
