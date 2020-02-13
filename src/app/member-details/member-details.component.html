@@ -2,7 +2,7 @@
   <h3 class="text-center lead">Add Member to Racing Team</h3>
   <br />
   <!--Template Driven Form or Model Driven Form?-->
-  <form (ngSubmit)="onSubmit(memberForm)">
+  <form  [formGroup]="memberForm" (ngSubmit)="onSubmit()">
     <div>
       <div class="row">
         <div class="col-md-6">
@@ -11,6 +11,9 @@
             class="form-control"
             id="firstName"
             placeholder="First Name"
+            formControlName="firstName"
+            required
+            pattern=".{3,}"
           />
         </div>
         <div class="col-md-6">
@@ -19,6 +22,9 @@
             class="form-control"
             id="lastName"
             placeholder="Last Name"
+            formControlName="lastName"
+            required
+            pattern=".{3,}"
           />
         </div>
       </div>
@@ -30,27 +36,54 @@
             class="form-control"
             id="jobTitle"
             placeholder="Job Title"
+            formControlName="jobTitle"
+            required
+            pattern=".{3,}"
           />
         </div>
         <!--We may have to make a service call to get this list-->
-        <select id="team" class="col-md-6 custom-select">
-          <option *ngFor="let team of teams">{{ team.teamName }}</option>
+        <select 
+          formControlName="team"
+          id="team"
+          class="col-md-6 custom-select"
+          required
+          >
+          <option [ngValue]="null" disabled>Pick Team Name</option>
+          <option
+            *ngFor="let team of teams"
+            [ngValue]="team.teamName">
+            {{ team.teamName }}
+          </option>
         </select>
       </div>
       <br />
       <div class="form-group col-md-6">
         <div class="row">
           <label id="activeStatus" class="md-check lead">
-            <input type="radio" value="Active" name="status" /> Active
+            <input
+              type="radio"
+              value="active"
+              name="status"
+              formControlName="status"
+              required /> Active
           </label>
           <label class="md-check lead">
-            <input type="radio" value="Inactive" name="status" /> Inactive
+            <input
+              type="radio"
+              value="inactive"
+              name="status" 
+              required
+              formControlName="status"/> Inactive
           </label>
         </div>
       </div>
     </div>
+    <!-- Cancel button rederecting back to members -->
+    <button (click)="backToMembers()" class="btn btn-secondary pull-right">
+      Cancel
+    </button>
     <!--Disable if form is invalid-->
-    <button type="submit" class="btn btn-primary pull-right">
+    <button [disabled]="memberForm.status === 'INVALID'" type="submit" class="btn btn-primary">
       Save Member
     </button>
   </form>

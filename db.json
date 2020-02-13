@@ -23,20 +23,12 @@
       "jobTitle": "Reserve Driver",
       "team": "Formula 1 - Car 77",
       "status": "Inactive"
-    },
-    {
-      "id": 4,
-      "firstName": "TEST",
-      "lastName": "Doe",
-      "jobTitle": "Driver",
-      "team": "Formula 1 - Car 77",
-      "status": "Active"
     }
   ],
   "teams": [
     {
       "id": 1,
-      "teamNameName": "Formula 1 - Car 77"
+      "teamName": "Formula 1 - Car 77"
     },
     {
       "id": 2,
