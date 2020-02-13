@@ -9,7 +9,7 @@
     "e2e": "ng e2e",
     "start": "npm-run-all -p client server db",
     "start-dev": "npm-run-all -p client server db",
-    "db": "json-server db.json",
+    "db": "json-server --watch db.json",
     "client": "ng serve",
     "server": "nodemon server.js"
   },

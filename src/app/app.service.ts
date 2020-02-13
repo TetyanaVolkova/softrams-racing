@@ -7,8 +7,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AppService {
-  api = 'http://localhost:8000/api';
-  username: string;
+  api = 'http://localhost:3000';
+  username: string;ss
 
   constructor(private http: HttpClient) {}
 
