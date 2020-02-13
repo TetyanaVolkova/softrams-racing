@@ -36,6 +36,11 @@ export class MemberDetailsComponent implements OnInit, OnChanges {
 
   ngOnChanges() {}
 
+  //Redirecting back to members
+  backToMembers() {
+    this.router.navigate(['/members']);
+  }
+
   // TODO: Add member to members
   onSubmit(form: FormGroup) {
     const newMember = {
