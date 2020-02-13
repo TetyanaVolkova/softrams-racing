@@ -2,11 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-var hsts = require('hsts');
+const hsts = require('hsts');
 const path = require('path');
-var xssFilter = require('x-xss-protection');
-var nosniff = require('dont-sniff-mimetype');
+const xssFilter = require('x-xss-protection');
+const nosniff = require('dont-sniff-mimetype');
 const request = require('request');
+const fs = require('fs');
+
+const data =  fs.readFileSync('db.json');
+const mydata = JSON.parse(data);
+// console.log(mydata);
 
 const app = express();
 
@@ -30,12 +35,12 @@ app.use(
 );
 
 app.use(
-  express.static(path.join(__dirname, 'dist/softrams-racing'), {
+  express.static(path.join(__dirname, 'src'), {
     etag: false
   })
 );
 
-app.get('/api/members', (req, res) => {
+app.get('/members', (req, res) => {
   request('http://localhost:3000/members', (err, response, body) => {
     if (response.statusCode <= 500) {
       res.send(body);
@@ -44,19 +49,31 @@ app.get('/api/members', (req, res) => {
 });
 
 // TODO: Dropdown!
-app.get('/api/teams', (req, res) => {
+app.get('/teams', (req, res) => {
 
 });
 
 // Submit Form!
-app.post('/api/addMember', (req, res) => {
-
+app.post('/members', (req, res) => {
+  //Getting json data from db.json
+  const data = fs.readFileSync('db.json');
+  //Parsing json
+  const teams = JSON.parse(data);
+  //Pushing new menmer to 'database'/json file
+  teams.members.push(req.body);
+  //Stringify to write back to json
+  const stringifyTeams = JSON.stringify(teams, null, 2);
+  fs.writeFile('db.json', stringifyTeams, finished);
+  function finished(err) {
+    console.log("ADDED!!!");
+  }
+  res.json(teams);
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/softrams-racing/index.html'));
+  res.sendFile(path.join(__dirname, 'src/index.html'));
 });
 
-app.listen('8000', () => {
+app.listen('3000', () => {
   console.log('Vrrrum Vrrrum! Server starting!');
 });

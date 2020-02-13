@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
@@ -25,7 +26,11 @@ export class MemberDetailsComponent implements OnInit, OnChanges {
   alertMessage: String;
   teams = [];
 
-  constructor(private fb: FormBuilder, private appService: AppService, private router: Router) {}
+  constructor(private fb: FormBuilder,
+              private appService: AppService,
+              private router: Router,
+              private http: HttpClient
+            ) {}
 
   ngOnInit() {}
 
@@ -33,7 +38,21 @@ export class MemberDetailsComponent implements OnInit, OnChanges {
 
   // TODO: Add member to members
   onSubmit(form: FormGroup) {
-    console.log(form);
-    this.memberModel = form.value;
+    const newMember = {
+      "id": 4,
+      "firstName": "TEST",
+      "lastName": "Doe",
+      "jobTitle": "Driver",
+      "team": "Formula 1 - Car 77",
+      "status": "Active"
+    }
+    // console.log(form);
+    // this.memberModel = form.value;
+    this.http
+    .post('http://localhost:3000/members', newMember)
+    .subscribe(response => {
+      console.log(response);
+    });
+    this.router.navigate(['/members']);
   }
 }
