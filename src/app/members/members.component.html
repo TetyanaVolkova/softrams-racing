@@ -9,7 +9,8 @@
         <th>Job Title</th>
         <th>Racing Team</th>
         <th>Status</th>
-        <th>Remove</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -20,8 +21,117 @@
         <td>{{member?.jobTitle}}</td>
         <td>{{member?.team}}</td>
         <td>{{member?.status}}</td>
-        <td><button button type="button" class="close" aria-label="Close" (click)="removeMember(i)">x</button></td>
+        <td>
+          <button
+            button
+            type="button"
+            class="close"
+            aria-label="Edit"
+            (click)="editMemberByID(member)">
+            <i class="fa fa-pencil-square-o" aria-hidden="true">
+            </i>
+          </button>
+        </td>
+        <td>
+          <button
+              button type="button"
+              class="close"
+              aria-label="Close"
+              (click)="deleteMemberById(i)">x
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div *ngIf="editMember" class="edit_member container-fluid col-md-6">
+      <h3 class="text-center lead">Edit Member</h3>
+      <br />
+      <!--Template Driven Form or Model Driven Form?-->
+      <form  [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+        <div>
+          <div class="row">
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                placeholder="First Name"
+                formControlName="firstName"
+                required
+                pattern=".{3,}"
+              />
+            </div>
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                placeholder="Last Name"
+                formControlName="lastName"
+                required
+                pattern=".{3,}"
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                id="jobTitle"
+                placeholder="Job Title"
+                formControlName="jobTitle"
+                required
+                pattern=".{3,}"
+              />
+            </div>
+            <!--We may have to make a service call to get this list-->
+            <select 
+              formControlName="team"
+              id="team"
+              class="col-md-6 custom-select"
+              required
+              >
+              <option [ngValue]="null" disabled>Pick Team Name</option>
+              <option
+                *ngFor="let team of teams"
+                [ngValue]="team.teamName">
+                {{ team.teamName }}
+              </option>
+            </select>
+          </div>
+          <br />
+          <div class="form-group col-md-6">
+            <div class="row">
+              <label id="activeStatus" class="md-check lead">
+                <input
+                  type="radio"
+                  value="active"
+                  name="status"
+                  formControlName="status"
+                  required /> Active
+              </label>
+              <label class="md-check lead">
+                <input
+                  type="radio"
+                  value="inactive"
+                  name="status" 
+                  required
+                  formControlName="status"/> Inactive
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Cancel button rederecting back to members -->
+        <button (click)="backToMembers()" class="btn btn-secondary pull-right">
+          Cancel
+        </button>
+        <!--Disable if form is invalid-->
+        <button [disabled]="memberForm.status === 'INVALID'" type="submit" class="btn btn-primary">
+          Edit Member
+        </button>
+      </form>
+    </div>
+    
 </div>

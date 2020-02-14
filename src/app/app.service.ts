@@ -52,6 +52,14 @@ export class AppService {
     });
   }
 
+  editMember(memberId, newInfo) {
+    this.http
+    .put('http://localhost:3000/members/' + +memberId, newInfo)
+    .subscribe(response => {
+      console.log(response);
+    });
+  }
+
   getTeams() {
     return this.http
       .get(`${this.api}/teams`)

@@ -6,6 +6,18 @@ button.close {
   float: none;
 }
 
-td:last-child {
+td:last-child, th:last-child {
   text-align: center;
+}
+.edit_member {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+  padding: 5%;
+  height: 100vh;
+  max-width: 100vw !important;
+}
+#activeStatus {
+  margin-right: 2vw;
 }

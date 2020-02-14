@@ -1,3 +1,4 @@
+import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppService } from '../app.service';
 import { Router } from '@angular/router';
@@ -8,8 +9,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./members.component.css']
 })
 export class MembersComponent implements OnInit, OnDestroy {
+  memberForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    jobTitle: new FormControl(''),
+    status: new FormControl(),
+    team :new FormControl()
+  });
   members = [];
   private subscription;
+  editMember = false;
   constructor(public appService: AppService, private router: Router) {}
 
   ngOnInit() {
@@ -29,11 +38,17 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.router.navigate(['addmember']);
   }
 
-  removeMember(memberId: string) {
-    this.appService.removeMember(memberId);
+  editMemberByID(id: number) {
+    this.editMember = true;
   }
 
-  editMemberByID(id: number) {}
-
-  deleteMemberById(id: number) {}
+  deleteMemberById(id: number) {
+    const confirmation = confirm("Are you sure you want to delete this member?");
+    if(confirmation) {
+      this.appService.removeMember(id);
+    }
+  }
+  backToMembers() {
+    this.editMember = false;
+  }
 }
