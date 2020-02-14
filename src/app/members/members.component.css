@@ -2,4 +2,10 @@
   margin-bottom: 10px;
 }
 
+button.close {
+  float: none;
+}
 
+td:last-child {
+  text-align: center;
+}

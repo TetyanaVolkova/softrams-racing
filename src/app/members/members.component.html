@@ -9,16 +9,18 @@
         <th>Job Title</th>
         <th>Racing Team</th>
         <th>Status</th>
+        <th>Remove</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor='let member of members'>
-        <td>{{member?.id}}</td>
+      <tr *ngFor='let member of members; let i = index'>
+        <td>{{i + 1}}</td>
         <td>{{member?.firstName}}</td>
         <td>{{member?.lastName}}</td>
         <td>{{member?.jobTitle}}</td>
         <td>{{member?.team}}</td>
         <td>{{member?.status}}</td>
+        <td><button button type="button" class="close" aria-label="Close" (click)="removeMember(i)">x</button></td>
       </tr>
     </tbody>
   </table>

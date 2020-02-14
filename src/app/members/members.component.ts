@@ -29,6 +29,10 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.router.navigate(['addmember']);
   }
 
+  removeMember(memberId: string) {
+    this.appService.removeMember(memberId);
+  }
+
   editMemberByID(id: number) {}
 
   deleteMemberById(id: number) {}
