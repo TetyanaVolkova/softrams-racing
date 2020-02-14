@@ -42,7 +42,6 @@ export class MemberDetailsComponent implements OnInit {
         return members[it].length;
      })
      this.membersCount = membersArr.length;
-     console.log(this.membersCount);
     });
   }
 
@@ -53,22 +52,18 @@ export class MemberDetailsComponent implements OnInit {
 
   // TODO: Add member to members
   onSubmit() {
+    const id = new Date().valueOf().toString().substring(0, 7);
     this.memberModel = {
-      id: +this.membersCount + 1,
+      id: +id,
       firstName: this.memberForm.value.firstName,
       lastName: this.memberForm.value.lastName,
       jobTitle: this.memberForm.value.jobTitle,
       team: this.memberForm.value.team,
       status: this.memberForm.value.status
     };
-    //Posting new member to database
-    this.http
-    .post('http://localhost:3000/members', this.memberModel)
-    .subscribe(response => {
-      this.appService.membersListener.next(response);
-      setTimeout(() => {
-        this.router.navigate(['/members']);
-      }, 100);
-    });
+    this.appService.addMember(this.memberModel);
+    setTimeout(() => {
+      this.router.navigate(['/members']);
+    }, 100);
   }
 }

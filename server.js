@@ -11,7 +11,6 @@ const fs = require('fs');
 
 const data =  fs.readFileSync('db.json');
 const mydata = JSON.parse(data);
-// console.log(mydata);
 
 const app = express();
 
@@ -44,7 +43,6 @@ app.use(
 app.get('/members', (req, res) => {
   request('http://localhost:3000/members', (err, response, body) => {
     if (response.statusCode <= 500) {
-      console.log(body);
       res.send(body);
     }
   });
@@ -65,7 +63,7 @@ app.post('/members', (req, res) => {
   const data = fs.readFileSync('db.json');
   //Parsing json
   const teams = JSON.parse(data);
-  //Pushing new menmer to 'database'/json file
+  //Pushing new member to 'database'/json file
   teams.members.push(req.body);
   //Stringify to write back to json
   const stringifyTeams = JSON.stringify(teams, null, 2);
@@ -75,6 +73,21 @@ app.post('/members', (req, res) => {
   }
   res.json(teams.members);
 });
+
+app.delete('/members/:id', (req, res) => {
+  //Getting json data from db.json
+  const data = fs.readFileSync('db.json');
+  //Parsing json
+  const teams = JSON.parse(data);
+  //Deleteting member fron json file
+  teams.members.splice(+req.params.id,1);
+  const stringifyTeams = JSON.stringify(teams, null, 2);
+  fs.writeFile('db.json', stringifyTeams, finished);
+  function finished(err) {
+    console.log("DELETED!!!");
+  }
+  res.status(200).json(teams.members);
+})
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'src/index.html'));

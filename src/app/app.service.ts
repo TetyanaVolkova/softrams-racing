@@ -33,7 +33,24 @@ export class AppService {
     this.username = name;
   }
 
-  addMember(memberForm) {}
+  addMember(memberForm) {
+    //Adding new member to database
+    this.http
+    .post('http://localhost:3000/members', memberForm)
+    .subscribe(response => {
+      this.membersListener.next(response);
+    });
+  }
+
+  removeMember(memberId) {
+    //Adding new member to database
+    this.http
+    .delete('http://localhost:3000/members/' + memberId)
+    .subscribe(response => {
+      console.log(response);
+      this.membersListener.next(response);
+    });
+  }
 
   getTeams() {
     return this.http
