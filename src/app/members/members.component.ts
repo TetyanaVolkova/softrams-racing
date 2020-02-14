@@ -1,3 +1,4 @@
+import { Member } from './../member-details/member.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppService } from '../app.service';
@@ -17,6 +18,9 @@ export class MembersComponent implements OnInit, OnDestroy {
     team :new FormControl()
   });
   members = [];
+  teams = [];
+  private editingId = null ;
+  memberToEdit: Member;
   private subscription;
   editMember = false;
   constructor(public appService: AppService, private router: Router) {}
@@ -27,8 +31,8 @@ export class MembersComponent implements OnInit, OnDestroy {
       this.members = Object.keys(members).map(function(it) { 
         return members[it]
      })
-     console.log(this.members);
     });
+  this.appService.getTeams().subscribe(teams => (this.teams = teams));
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -38,7 +42,18 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.router.navigate(['addmember']);
   }
 
-  editMemberByID(id: number) {
+  onSubmit( id ) {
+    this.memberForm.value.id = id;
+    this.memberToEdit = this.memberForm.value;
+    this.appService.editMember( this.memberToEdit, this.editingId );
+    this.editMember = false;
+    this.memberForm.reset();
+    this.editingId = null;
+  }
+
+  editMemberByID(member, id) {
+    this.editingId = id;
+    this.memberToEdit = {...member};
     this.editMember = true;
   }
 
@@ -50,5 +65,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
   backToMembers() {
     this.editMember = false;
+    this.editingId = null;
+    this.memberForm.reset();
   }
 }

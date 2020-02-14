@@ -74,6 +74,21 @@ app.post('/members', (req, res) => {
   res.json(teams.members);
 });
 
+app.put('/members/:id', (req, res) => {
+  //Getting json data from db.json
+  const data = fs.readFileSync('db.json');
+  //Parsing json
+  const teams = JSON.parse(data);
+  //Deleteting member fron json file
+  teams.members.splice(+req.params.id,1, req.body);
+  const stringifyTeams = JSON.stringify(teams, null, 2);
+  fs.writeFile('db.json', stringifyTeams, finished);
+  function finished(err) {
+    console.log("DELETED!!!");
+  }
+  res.status(200).json(teams.members);
+})
+
 app.delete('/members/:id', (req, res) => {
   //Getting json data from db.json
   const data = fs.readFileSync('db.json');

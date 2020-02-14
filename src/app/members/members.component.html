@@ -27,7 +27,7 @@
             type="button"
             class="close"
             aria-label="Edit"
-            (click)="editMemberByID(member)">
+            (click)="editMemberByID(member, i)">
             <i class="fa fa-pencil-square-o" aria-hidden="true">
             </i>
           </button>
@@ -47,7 +47,7 @@
       <h3 class="text-center lead">Edit Member</h3>
       <br />
       <!--Template Driven Form or Model Driven Form?-->
-      <form  [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+      <form  [formGroup]="memberForm" (ngSubmit)="onSubmit(memberToEdit.id)">
         <div>
           <div class="row">
             <div class="col-md-6">
@@ -57,6 +57,8 @@
                 id="firstName"
                 placeholder="First Name"
                 formControlName="firstName"
+                [(ngModel)]="memberToEdit.firstName"
+                name
                 required
                 pattern=".{3,}"
               />
@@ -68,6 +70,7 @@
                 id="lastName"
                 placeholder="Last Name"
                 formControlName="lastName"
+                [(ngModel)]="memberToEdit.lastName"
                 required
                 pattern=".{3,}"
               />
@@ -82,18 +85,20 @@
                 id="jobTitle"
                 placeholder="Job Title"
                 formControlName="jobTitle"
+                [(ngModel)]="memberToEdit.jobTitle"
                 required
                 pattern=".{3,}"
               />
             </div>
             <!--We may have to make a service call to get this list-->
-            <select 
+            <select
+              [(ngModel)]="memberToEdit.team"
               formControlName="team"
               id="team"
               class="col-md-6 custom-select"
               required
               >
-              <option [ngValue]="null" disabled>Pick Team Name</option>
+              <!-- <option [ngValue]="null">{{memberToEdit.team}}</option> -->
               <option
                 *ngFor="let team of teams"
                 [ngValue]="team.teamName">
@@ -106,16 +111,18 @@
             <div class="row">
               <label id="activeStatus" class="md-check lead">
                 <input
+                  [(ngModel)]="memberToEdit.status"
                   type="radio"
-                  value="active"
+                  value="Active"
                   name="status"
                   formControlName="status"
                   required /> Active
               </label>
               <label class="md-check lead">
                 <input
+                  [(ngModel)]="memberToEdit.status"
                   type="radio"
-                  value="inactive"
+                  value="Inactive"
                   name="status" 
                   required
                   formControlName="status"/> Inactive
