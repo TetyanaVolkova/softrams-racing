@@ -47,16 +47,15 @@ export class AppService {
     this.http
     .delete('http://localhost:3000/members/' + memberId)
     .subscribe(response => {
-      console.log(response);
       this.membersListener.next(response);
     });
   }
 
-  editMember(memberId, newInfo) {
+  editMember( member, editingId) {
     this.http
-    .put('http://localhost:3000/members/' + +memberId, newInfo)
+    .put('http://localhost:3000/members/' + editingId, member)
     .subscribe(response => {
-      console.log(response);
+      this.membersListener.next(response);
     });
   }
 
