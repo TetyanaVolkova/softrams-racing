@@ -23,22 +23,6 @@
       "status": "Inactive",
       "team": "Formula 1 - Car 77",
       "id": 3
-    },
-    {
-      "firstName": "TATANKA",
-      "lastName": "VOLKOVA",
-      "jobTitle": "FronEnd Developer",
-      "status": "Active",
-      "team": "World Endurance Championship - Car 5",
-      "id": 1581715
-    },
-    {
-      "firstName": "Matviy",
-      "lastName": "Volkov",
-      "jobTitle": "FronEnd Developer",
-      "status": "Active",
-      "team": "World Endurance Championship - Car 99",
-      "id": 1581720
     }
   ],
   "teams": [
