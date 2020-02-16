@@ -49,4 +49,11 @@ describe('LoginComponent', () => {
     tick();
     expect(router.navigate).toHaveBeenCalledWith(['/members']);
   }));
+  
+  it('should navigate to /members after login', () => {
+    let appService = fixture.debugElement.injector.get(AppService);
+    component.login();
+    appService.setUsername('User Name')
+    expect(appService.username).toBe('User Name');
+  });
 });
