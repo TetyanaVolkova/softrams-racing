@@ -35,7 +35,10 @@ export class MemberDetailsComponent implements OnInit {
             ) {}
 
   ngOnInit() {
-    this.appService.getTeams().subscribe(teams => (this.teams = teams));
+    this.appService.getTeams().subscribe(teams => {
+      this.teams = teams;
+      console.log(this.teams);
+    });
     this.appService.getMembers();
     this.subscription = this.appService.membersListener.subscribe(members => {
       const membersArr = Object.keys(members).map(function(it) { 
