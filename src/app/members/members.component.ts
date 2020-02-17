@@ -18,10 +18,11 @@ export class MembersComponent implements OnInit, OnDestroy {
     team :new FormControl()
   });
   members = [];
-  teams = [];
+  teams;
   private editingId = null ;
   memberToEdit: Member;
   private subscription;
+  private teamSub;
   editMember = false;
   constructor(public appService: AppService, private router: Router) {}
 
@@ -32,10 +33,14 @@ export class MembersComponent implements OnInit, OnDestroy {
         return members[it]
      })
     });
-  this.appService.getTeams().subscribe(teams => (this.teams = teams));
+    this.appService.getTeams();
+    this.teamSub = this.appService.teamsListener.subscribe(teams => {
+      this.teams = teams;
+    });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.teamSub.unsubscribe();
   }
 
   goToAddMemberForm() {

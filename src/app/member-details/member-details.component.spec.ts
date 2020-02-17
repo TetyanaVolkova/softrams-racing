@@ -5,13 +5,17 @@ import { Location } from "@angular/common";
 import { MemberDetailsComponent } from './member-details.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from "@angular/common/http/testing";
 
 // Bonus points!
 describe('MemberDetailsComponent', () => {
@@ -19,6 +23,7 @@ describe('MemberDetailsComponent', () => {
   let router: Router;
   let component: MemberDetailsComponent;
   let fixture: ComponentFixture<MemberDetailsComponent>;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -27,9 +32,11 @@ describe('MemberDetailsComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        HttpClientTestingModule,
         RouterModule
       ],
       providers: [
+        AppService,
         HttpClient,
         FormBuilder,
         {
@@ -54,7 +61,7 @@ describe('MemberDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get teams from database', async(() => {
+  it('should get teams from database', fakeAsync(() => {
     let appService = fixture.debugElement.injector.get(AppService);
     let expectedResult = [
       {id: 1, teamName: "Formula 1 - Car 77"},
@@ -68,7 +75,8 @@ describe('MemberDetailsComponent', () => {
       {id: 9, teamName: "World Rally Championship - Car 77"},
       {id: 10, teamName: "World Rally Championship - Car 90"}
     ];
-    appService.getTeams().subscribe((result) => {
+    appService.getTeams();
+    appService.teamsListener.subscribe( result => {
       expect(result).toEqual(expectedResult);
     });
   }));
@@ -79,10 +87,9 @@ describe('MemberDetailsComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/members']);
   }));
   
-  it('should navigate to /members after submiting form', () => {
+  it('should navigate to /members after submiting form', fakeAsync(() => {
     component.onSubmit();
-    setTimeout(() => {
+    tick(400);
       expect(router.navigate).toHaveBeenCalledWith(['/members']);
-    }, 200);
-  });
+  }));
 });

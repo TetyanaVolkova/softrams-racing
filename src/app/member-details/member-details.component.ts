@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppService } from '../app.service';
 import { Router } from '@angular/router';
@@ -12,14 +12,15 @@ import { Member } from './member.model';
   templateUrl: './member-details.component.html',
   styleUrls: ['./member-details.component.css']
 })
-export class MemberDetailsComponent implements OnInit {
+export class MemberDetailsComponent implements OnInit, OnDestroy {
   memberModel: Member;
   submitted = false;
   alertType: String;
   alertMessage: String;
   private subscription;
+  private teamSub;
   private membersCount: number;
-  teams = [];
+  teams;
   memberForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
@@ -35,10 +36,11 @@ export class MemberDetailsComponent implements OnInit {
             ) {}
 
   ngOnInit() {
-    this.appService.getTeams().subscribe(teams => {
+    this.appService.getTeams();
+    this.teamSub = this.appService.teamsListener.subscribe(teams => {
       this.teams = teams;
-      console.log(this.teams);
     });
+
     this.appService.getMembers();
     this.subscription = this.appService.membersListener.subscribe(members => {
       const membersArr = Object.keys(members).map(function(it) { 
@@ -46,6 +48,11 @@ export class MemberDetailsComponent implements OnInit {
      })
      this.membersCount = membersArr.length;
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.teamSub.unsubscribe();
   }
 
   //Redirecting back to members

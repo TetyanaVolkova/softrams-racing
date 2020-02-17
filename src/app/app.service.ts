@@ -11,6 +11,7 @@ export class AppService {
   api = 'http://localhost:3000';
   username: string;
   membersListener = new Subject();
+  teamsListener = new Subject();
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +19,10 @@ export class AppService {
   getMembersListener() {
     return this.membersListener.asObservable();
   }
+    // Listener for teams
+    getTeamssListener() {
+      return this.teamsListener.asObservable();
+    }
 
   // Returns all members
   getMembers() {
@@ -28,6 +33,14 @@ export class AppService {
       this.membersListener.next(members);
     });
   }
+  
+    getTeams() {
+      this.http
+      .get(`${this.api}/teams`)
+      .pipe(catchError(this.handleError)).subscribe(data => {
+          this.teamsListener.next(data);
+        });
+    }
 
   setUsername(name: string): void {
     this.username = name;
@@ -57,12 +70,6 @@ export class AppService {
     .subscribe(response => {
       this.membersListener.next(response);
     });
-  }
-
-  getTeams() {
-    return this.http
-      .get(`${this.api}/teams`)
-      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
